@@ -1,12 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/pages/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/pages/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: 'var(--ion-color-primary)',
+        secondary: 'var(--ion-color-secondary)',
+        tertiary: 'var(--ion-color-tertiary)',
+        success: 'var(--ion-color-success)',
+        warning: 'var(--ion-color-warning)',
+        danger: 'var(--ion-color-danger)',
+        dark: 'var(--ion-color-dark)',
+        medium: 'var(--ion-color-medium)',
+        light: 'var(--ion-color-light)',
+      },
+    },
   },
   plugins: [],
-}
-
+};
