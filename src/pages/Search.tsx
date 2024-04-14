@@ -5,26 +5,24 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import ExploreContainer from "../components/ExploreContainer";
 
-const Tab1: React.FC = () => {
+const Search: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle className="">Tab 1 nè</IonTitle>
+          <IonTitle>Search</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
+            <IonTitle size="large">Search</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
       </IonContent>
     </IonPage>
   );
 };
 
-export default Tab1;
+export default Search;
