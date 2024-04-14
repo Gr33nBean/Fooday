@@ -33,19 +33,27 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./index.css";
+
 import Plan from "./pages/Plan";
 import Account from "./pages/Account";
 import {
   getIconString,
   tabBarIcon,
 } from "./libs/constants/tabBarIcon.constant";
+import { useState } from "react";
 
 setupIonicReact({
   rippleEffect: false,
-  mode: "md",
+  mode: "ios",
 });
 
 const App: React.FC = () => {
+  const [currentTab, setCurrentTab] = useState("home");
+
+  const handleTabClick = (tab: string) => {
+    setCurrentTab(tab);
+  };
   return (
     <IonApp>
       <IonReactRouter>
@@ -68,7 +76,7 @@ const App: React.FC = () => {
             </Route>
           </IonRouterOutlet>
 
-          <IonTabBar slot="bottom">
+          <IonTabBar slot="bottom" color={"light"}>
             {[
               {
                 tab: "home",

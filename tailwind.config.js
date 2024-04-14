@@ -14,6 +14,9 @@ export default {
         medium: 'var(--ion-color-medium)',
         light: 'var(--ion-color-light)',
       },
+      fontFamily: {
+        manrope: ['Manrope', 'sans-serif'],
+      },
     },
   },
   plugins: [],

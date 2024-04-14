@@ -68,8 +68,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-medium-tint: #9d9fa6;
 
   /** light **/
-  --ion-color-light: #f4f5f8;
-  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light: #ffffff;
+  --ion-color-light-rgb: 255, 255, 255;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
@@ -223,5 +223,19 @@ html {
   /* For more information on dynamic font scaling, visit the documentation: 
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
-  --ion-font-family: 'Manrope', sans-serif;
+  --ion-font-family: "Manrope", sans-serif;
+}
+
+ion-toolbar,
+ion-tab-bar {
+  --background: white;
+}
+
+ion-title.title-large {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0px;
 }
