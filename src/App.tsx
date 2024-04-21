@@ -33,7 +33,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import "./index.css";
+import "./theme/tailwind.css";
 
 import Plan from "./pages/Plan";
 import Account from "./pages/Account";
