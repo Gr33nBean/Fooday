@@ -1,4 +1,3 @@
-import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
   IonIcon,
@@ -10,9 +9,10 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import Home from "./pages/Home";
-import Search from "./pages/Search";
+import { Redirect, Route, useRouteMatch } from "react-router-dom";
 import Create from "./pages/Create";
+import Home, { mockBlogs } from "./pages/Home";
+import Search from "./pages/Search";
 
 import "tailwindcss/tailwind.css";
 /* Core CSS required for Ionic components to work properly */
@@ -24,29 +24,72 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
 /* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
+import "@ionic/react/css/display.css";
+import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/padding.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "./theme/variables.css";
 import "./theme/tailwind.css";
+import "./theme/variables.css";
 
-import Plan from "./pages/Plan";
-import Account from "./pages/Account";
+import { useState } from "react";
+import { BlogCarousel } from "./components/UI/Home/Blog/BlogCarousel";
+import { BlogDiet } from "./components/UI/Home/Blog/BlogDiet";
+import BlogItem from "./components/UI/Home/Blog/BlogItem";
+import { BlogLeftColumn } from "./components/UI/Home/Blog/BlogLeftColumn";
+import { BlogMetaBar } from "./components/UI/Home/Blog/BlogMetaBar";
 import {
   getIconString,
   tabBarIcon,
 } from "./libs/constants/tabBarIcon.constant";
-import { useState } from "react";
+import Account from "./pages/Account";
+import Plan from "./pages/Plan";
 
 setupIonicReact({
   rippleEffect: false,
   mode: "ios",
 });
+
+const BlogDetail = () => {
+  const match = useRouteMatch<{ id: string }>("/blog/:id");
+  const foundBlog = mockBlogs.find((b) => b.blog.id === match?.params.id);
+
+  if (!foundBlog) {
+    return <p>Blog not found</p>;
+  }
+
+  const { blog, carousel, diet } = foundBlog;
+
+  return (
+    <>
+      <BlogItem
+        blog={blog}
+        metaBar={
+          <BlogMetaBar
+            username={blog.userName}
+            createdAt={blog.createdAt}
+            avatar={blog.avatar}
+          />
+        }
+        carousel={<BlogCarousel images={carousel.images} />}
+        diet={<BlogDiet {...diet} />}
+      />
+
+      <div className="h-[1px] bg-gray-300"></div>
+
+      <ul>
+        {Array(3)
+          .fill(0)
+          .map((_, index) => (
+            <li>This is a comment</li>
+          ))}
+      </ul>
+    </>
+  );
+};
 
 const App: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");
@@ -61,6 +104,7 @@ const App: React.FC = () => {
           <IonRouterOutlet>
             {[
               { path: "/home", component: <Home /> },
+              { path: "/blog/:id", component: <BlogDetail /> },
               { path: "/search", component: <Search /> },
               { path: "/create", component: <Create /> },
               { path: "/plan", component: <Plan /> },
