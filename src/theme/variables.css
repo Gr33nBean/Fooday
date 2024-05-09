@@ -3,8 +3,9 @@ http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-background-color: #ffffff;
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #1da1f2;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -224,18 +225,4 @@ html {
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
   --ion-font-family: "Manrope", sans-serif;
-}
-
-ion-toolbar,
-ion-tab-bar {
-  --background: white;
-}
-
-ion-title.title-large {
-  font-size: 24px;
-  font-weight: 800;
-}
-
-.header-ios ion-toolbar:last-of-type {
-  --border-width: 0px;
 }

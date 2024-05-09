@@ -5,7 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import SearchContent from "../components/UI/Search";
+import SearchContent from "../components/UI/SearchPage";
 
 const Search: React.FC = () => {
   return (
@@ -15,11 +15,9 @@ const Search: React.FC = () => {
           <IonTitle>Tìm kiếm</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="ion-padding-horizontal">
+      <IonContent fullscreen>
         <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tìm kiếm</IonTitle>
-          </IonToolbar>
+          <IonToolbar></IonToolbar>
         </IonHeader>
         <SearchContent />
       </IonContent>

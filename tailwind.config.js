@@ -13,6 +13,11 @@ export default {
         dark: 'var(--ion-color-dark)',
         medium: 'var(--ion-color-medium)',
         light: 'var(--ion-color-light)',
+        blue: '#1da1f2',
+        black: '#14171A',
+        'dark-gray': '#657786',
+        'light-gray': '#AAB8C2',
+        'extra-light-gray': '#E1E8ED',
       },
       fontFamily: {
         manrope: ['Manrope', 'sans-serif'],

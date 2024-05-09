@@ -1,18 +1,19 @@
-import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
   IonIcon,
-  IonLabel,
+  IonNav,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
+  iosTransitionAnimation,
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { Redirect, Route } from "react-router-dom";
+import Create from "./pages/Create";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import Create from "./pages/Create";
 
 import "tailwindcss/tailwind.css";
 /* Core CSS required for Ionic components to work properly */
@@ -24,92 +25,97 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
 /* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
+import "@ionic/react/css/display.css";
+import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/padding.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "./theme/variables.css";
+import "./theme/global.css";
 import "./theme/tailwind.css";
+import "./theme/variables.css";
 
-import Plan from "./pages/Plan";
-import Account from "./pages/Account";
-import {
-  getIconString,
-  tabBarIcon,
-} from "./libs/constants/tabBarIcon.constant";
 import { useState } from "react";
-
+import { getTabFromHref, routes } from "./libs/constants/tabBarIcon.constant";
+import Account from "./pages/Account";
+import RequestHistory from "./pages/RequestHistory";
 setupIonicReact({
   rippleEffect: false,
   mode: "ios",
+  navAnimation: iosTransitionAnimation,
 });
 
 const App: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState("home");
-
-  const handleTabClick = (tab: string) => {
-    setCurrentTab(tab);
-  };
+  const [currentTab, setCurrentTab] = useState(
+    getTabFromHref(window.location.pathname)
+  );
   return (
-    <IonApp>
+    <IonApp className="hi">
       <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            {[
-              { path: "/home", component: <Home /> },
-              { path: "/search", component: <Search /> },
-              { path: "/create", component: <Create /> },
-              { path: "/plan", component: <Plan /> },
-              { path: "/account", component: <Account /> },
-            ].map(({ path, component }, index) => (
-              <Route exact path={path} key={index}>
-                {component}
-              </Route>
-            ))}
+        <IonNav
+          className="bg-transparent"
+          root={() => (
+            <IonTabs>
+              <IonRouterOutlet className="bg-transparent">
+                {[
+                  { href: routes.home.href, component: <Home /> },
+                  { href: routes.search.href, component: <Search /> },
+                  { href: routes.create.href, component: <Create /> },
+                  {
+                    href: routes.requestHistory.href,
+                    component: <RequestHistory />,
+                  },
+                  { href: routes.account.href, component: <Account /> },
+                ].map(({ href, component }, index) => (
+                  <Route exact path={href} key={index}>
+                    {component}
+                  </Route>
+                ))}
+                <Route exact path="/">
+                  <Redirect to={routes.home.tab} />
+                </Route>
+              </IonRouterOutlet>
 
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-          </IonRouterOutlet>
+              <IonTabBar
+                slot="bottom"
+                color={"light"}
+                className="h-[68px] transition-all duration-300"
+                onIonTabsDidChange={(a: any) => {
+                  const tab = a.detail.tab;
 
-          <IonTabBar slot="bottom" color={"light"}>
-            {[
-              {
-                tab: "home",
-                href: "/home",
-                icon: getIconString(tabBarIcon.home),
-              },
-              {
-                tab: "search",
-                href: "/search",
-                icon: getIconString(tabBarIcon.search),
-              },
-              {
-                tab: "create",
-                href: "/create",
-                icon: getIconString(tabBarIcon.create),
-              },
-              {
-                tab: "plan",
-                href: "/plan",
-                icon: getIconString(tabBarIcon.plan),
-              },
-              {
-                tab: "account",
-                href: "/account",
-                icon: getIconString(tabBarIcon.account),
-              },
-            ].map(({ tab, href, icon }, index) => (
-              <IonTabButton tab={tab} href={href} key={index}>
-                <IonIcon aria-hidden="true" icon={icon} />
-              </IonTabButton>
-            ))}
-          </IonTabBar>
-        </IonTabs>
+                  setCurrentTab(tab);
+                }}
+              >
+                {[
+                  routes.home,
+                  routes.search,
+                  routes.create,
+                  routes.requestHistory,
+                  routes.account,
+                ].map(({ tab, href, icon }, index) => (
+                  <IonTabButton
+                    tab={tab}
+                    href={href}
+                    key={index}
+                    className="transition-all duration-300"
+                  >
+                    <IonIcon
+                      className={`size-[28px] rounded-md  p-[10px] transition-all duration-300 ${
+                        currentTab === tab
+                          ? "bg-blue bg-opacity-10 text-blue shadow-[0px_0px_3px_0px_#00000026]"
+                          : "text-dark-gray"
+                      }`}
+                      aria-hidden="true"
+                      icon={icon}
+                    />
+                  </IonTabButton>
+                ))}
+              </IonTabBar>
+            </IonTabs>
+          )}
+        ></IonNav>
       </IonReactRouter>
     </IonApp>
   );
