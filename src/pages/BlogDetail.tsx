@@ -9,7 +9,6 @@ import {
   IonHeader,
   IonIcon,
   IonPage,
-  IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -26,7 +25,7 @@ const BlogDetail = () => {
     return <p>Blog not found</p>;
   }
 
-  const { blog, carousel, diet } = foundBlog;
+  const { blog, carousel } = foundBlog;
 
   return (
     <IonPage>

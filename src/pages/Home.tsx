@@ -201,7 +201,7 @@ const Home: React.FC = () => {
         </IonHeader>
 
         {/* TODO: this is out of asset  */}
-        <div className="px-[32px]">
+        <div className="ion-padding-horizontal">
           <NewFeedCard
             buttons={[
               <NewFeedActionButton icon={imageOutline} text={"Ảnh/video"} />,
@@ -213,7 +213,7 @@ const Home: React.FC = () => {
           />
         </div>
 
-        <div className="px-[32px]">
+        <div className="ion-padding-horizontal">
           <NoScrollBarIonSegment
             scrollable
             value={segment}

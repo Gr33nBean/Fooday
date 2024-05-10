@@ -12,6 +12,9 @@ import TextField from "@/components/common/TextField/TextField";
 import { useState } from "react";
 import TextFieldOpenModal from "@/components/common/TextField/TextFieldOpenModal";
 import { Radio_Check } from "@/components/common/Svg";
+import SpacingBottom, {
+  spacingBottomHeight,
+} from "@/components/common/GlobalModal/SpacingBottom";
 
 const CreateModal = ({
   type,
@@ -34,7 +37,7 @@ const CreateModal = ({
       initialBreakpoint={1}
       breakpoints={[0, 1]}
     >
-      <div className="h-[100svh] relative ">
+      <div className="h-[95svh] relative ">
         {/*  */}
         <div className="sticky top-0 w-full bg-white">
           <TitleHeader
@@ -47,7 +50,7 @@ const CreateModal = ({
 
         {/*  */}
         <div
-          className={`h-[calc(100svh-${submitBottomHeight}px-${headerHeight}px)] overflow-auto ion-padding-horizontal py-3`}
+          className={`h-[calc(100%-${submitBottomHeight}px-${headerHeight}px-{${spacingBottomHeight}px)] overflow-auto ion-padding-horizontal py-3`}
         >
           <div className="flex w-full items-start gap-2 flex-wrap">
             {/*  */}
@@ -149,9 +152,14 @@ const CreateModal = ({
         </div>
 
         {/*  */}
-        <div className="fixed left-0 bottom-0 h-fit w-full">
+        <div
+          className={`fixed left-0 bottom-[${spacingBottomHeight}px] h-fit w-full`}
+        >
           <SubmitBottom />
         </div>
+
+        {/*  */}
+        <SpacingBottom />
       </div>
     </IonModal>
   );
