@@ -27,8 +27,20 @@ export const EventCard: FC<EventCardProps> = ({ event }) => {
             src="https://ionicframework.com/docs/img/demos/avatar.svg"
           />
         </IonAvatar>
-        <div>
-          <p>{event.publisher.username}</p>
+        <div className="w-full">
+          <div className="flex items-center justify-between">
+            <p>{event.publisher.username}</p>
+            <p className="text-sm text-right">
+              {getFormattedDiffTime(
+                dayjs().diff(dayjs(event.createdAt.toString()))
+              ).getFormattedText(
+                (value, unit) =>
+                  `${value.toString().padStart(2, "0")} ${
+                    VietnameseTimeUnitMap[unit]
+                  }`
+              )}
+            </p>
+          </div>
           <div className="flex items-center gap-1">
             <IndicatorText>{event.publisher.indicator}</IndicatorText>
             <p className="text-xs font-bold text-medium">
@@ -36,16 +48,6 @@ export const EventCard: FC<EventCardProps> = ({ event }) => {
             </p>
           </div>
         </div>
-        <p className="flex-1 text-xs text-right">
-          {getFormattedDiffTime(
-            dayjs().diff(dayjs(event.createdAt.toString()))
-          ).getFormattedText(
-            (value, unit) =>
-              `${value.toString().padStart(2, "0")} ${
-                VietnameseTimeUnitMap[unit]
-              }`
-          )}
-        </p>
       </div>
 
       <div className="mt-2">

@@ -29,7 +29,7 @@ import "swiper/css";
 import BlogItem from "@/components/UI/Home/Blog/BlogItem";
 import mockBlogImage from "../assets/mock-blog-image.jpeg";
 import mockUserAvatar from "../assets/mock-user-avatar.png";
-import { extractedMentions } from "@/utils/home";
+import { extractMentions } from "@/utils/home";
 import { EventCard } from "@/components/UI/Home/Event/EventCard";
 import { mockEvents } from "@/mock";
 
@@ -182,9 +182,9 @@ enum Segment {
 
 const Home: React.FC = () => {
   const [segment, setSegment] = useState(Segment.All);
-  const processedMentions = extractedMentions(mentions);
-
   const swiperRef = useRef<SwiperRef>(null!);
+
+  const processedMentions = extractMentions(mentions);
 
   return (
     <IonPage>

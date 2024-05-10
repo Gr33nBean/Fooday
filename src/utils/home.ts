@@ -8,7 +8,7 @@ export const isTooLong =
 export const trimmedBody = (text: string = "") =>
   text.slice(0, BLOG_BODY_LENGTH_LIMIT) + "...";
 
-export const extractedMentions = <T>(mentions: T[]) => {
+export const extractMentions = <T>(mentions: T[]) => {
   return mentions.reduce<{
     firstThreeMentions: T[];
     restMentionsCount: number;
