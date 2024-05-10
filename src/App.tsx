@@ -36,60 +36,18 @@ import "./theme/tailwind.css";
 import "./theme/variables.css";
 
 import { useState } from "react";
-import { BlogCarousel } from "./components/UI/Home/Blog/BlogCarousel";
-import { BlogDiet } from "./components/UI/Home/Blog/BlogDiet";
-import BlogItem from "./components/UI/Home/Blog/BlogItem";
-import { BlogLeftColumn } from "./components/UI/Home/Blog/BlogLeftColumn";
-import { BlogMetaBar } from "./components/UI/Home/Blog/BlogMetaBar";
 import {
   getIconString,
   tabBarIcon,
 } from "./libs/constants/tabBarIcon.constant";
 import Account from "./pages/Account";
+import BlogDetail from "./pages/BlogDetail";
 import Plan from "./pages/Plan";
 
 setupIonicReact({
   rippleEffect: false,
   mode: "ios",
 });
-
-const BlogDetail = () => {
-  const match = useRouteMatch<{ id: string }>("/blog/:id");
-  const foundBlog = mockBlogs.find((b) => b.blog.id === match?.params.id);
-
-  if (!foundBlog) {
-    return <p>Blog not found</p>;
-  }
-
-  const { blog, carousel, diet } = foundBlog;
-
-  return (
-    <>
-      <BlogItem
-        blog={blog}
-        metaBar={
-          <BlogMetaBar
-            username={blog.userName}
-            createdAt={blog.createdAt}
-            avatar={blog.avatar}
-          />
-        }
-        carousel={<BlogCarousel images={carousel.images} />}
-        diet={<BlogDiet {...diet} />}
-      />
-
-      <div className="h-[1px] bg-gray-300"></div>
-
-      <ul>
-        {Array(3)
-          .fill(0)
-          .map((_, index) => (
-            <li>This is a comment</li>
-          ))}
-      </ul>
-    </>
-  );
-};
 
 const App: React.FC = () => {
   const [currentTab, setCurrentTab] = useState("home");

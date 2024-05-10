@@ -15,7 +15,7 @@ export const BlogLeftColumn: FC<BlogLeftColumnProps> = ({ avatar }) => {
           className="w-8 aspect-square object-cover"
         />
       </IonAvatar>
-      <div className="w-[1px] h-full bg-[var(--ion-color-medium)]"></div>
+      <div className="w-[1px] h-full bg-[#E1E8ED]"></div>
     </div>
   );
 };
