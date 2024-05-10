@@ -1,9 +1,10 @@
+import DefaultAva from "@/components/common/Avatar/DefaultAva";
 import { IonSearchbar } from "@ionic/react";
 import { Suspense } from "react";
 
 const SearchContent = () => {
   return (
-    <div className="px-8">
+    <div className="ion-padding">
       <p className="w-full text-2xl font-extrabold mb-4">Tìm kiếm</p>
       <div className="w-full sticky top-[-1px] z-10 rounded-md overflow-hidden bg-white">
         <IonSearchbar
@@ -33,11 +34,7 @@ const SearchContent = () => {
                         <div className="absolute top-0 left-0 w-full h-full bg-extra-light-gray animate-pulse"></div>
                       }
                     >
-                      <img
-                        className="size-full rounded-full object-cover"
-                        alt="Silhouette of a person's head"
-                        src="https://ionicframework.com/docs/img/demos/avatar.svg"
-                      />
+                      <DefaultAva />
                     </Suspense>
                   </div>
 

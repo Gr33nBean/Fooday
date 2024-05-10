@@ -1,3 +1,7 @@
+* {
+  font-family: "Manrope", sans-serif;
+}
+
 .worker-sign-in-page {
   visibility: hidden;
 
@@ -21,6 +25,10 @@ ion-content {
     center / cover;
 }
 
+ion-modal {
+  --height: auto;
+}
+
 ion-title.title-large {
   font-size: 24px;
   font-weight: 800;
@@ -36,4 +44,14 @@ ion-title.title-large {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+::placeholder {
+  color: #657786;
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  color: #657786;
+  opacity: 1;
 }

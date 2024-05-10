@@ -40,6 +40,8 @@ export const routes = {
 
 export function getTabFromHref(href: string) {
   switch (href) {
+    case "/":
+      return routes.home.tab;
     case routes.home.href:
       return routes.home.tab;
     case routes.search.href:
