@@ -2,17 +2,17 @@ import { IonText } from "@ionic/react";
 import { FC } from "react";
 
 export type BlogMentionProps = {
-  firstThreeMentions: string[];
+  firstMentions: string[];
   restMentionsCount: number;
 };
 
 export const BlogMentions: FC<BlogMentionProps> = ({
-  firstThreeMentions,
+  firstMentions,
   restMentionsCount,
 }) => {
   return (
     <div className="flex items-center gap-1">
-      {firstThreeMentions.map((mention, index) => {
+      {firstMentions.map((mention, index) => {
         return (
           <IonText
             key={index}

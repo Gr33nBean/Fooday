@@ -243,14 +243,18 @@ const Home: React.FC = () => {
           ref={swiperRef}
           spaceBetween={50}
           slidesPerView={1}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
+          onSlideChange={(swiper) => {
+            if (swiper.activeIndex !== segment) {
+              setSegment(swiper.activeIndex as Segment);
+            }
+          }}
+          onSwiper={(swiper) => {}}
         >
           <SwiperSlide>
             <Blogs
               blogs={mockBlogs}
               render={({ blog, carousel }) => (
-                <div className="px-[32px] py-4">
+                <div className="ion-padding-horizontal py-4">
                   <BlogItem
                     blog={blog}
                     leftColumn={<BlogItem.LeftColumn avatar={blog.avatar} />}
@@ -268,9 +272,7 @@ const Home: React.FC = () => {
                     carousel={<BlogItem.Carousel images={carousel.images} />}
                     mentions={
                       <BlogItem.Mentions
-                        firstThreeMentions={
-                          processedMentions.firstThreeMentions
-                        }
+                        firstMentions={processedMentions.firstThreeMentions}
                         restMentionsCount={processedMentions.restMentionsCount}
                       />
                     }
@@ -287,7 +289,7 @@ const Home: React.FC = () => {
             />
           </SwiperSlide>
           <SwiperSlide>
-            <div className="px-[32px] py-4">
+            <div className="ion-padding-horizontal py-4">
               <div className="flex flex-col gap-4">
                 {mockEvents.map((event) => (
                   <EventCard event={event} />
