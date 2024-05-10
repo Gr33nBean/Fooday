@@ -10,8 +10,11 @@ const BlogAttachments: FC<BlogAttachmentsProps> = ({ icon, fileCount }) => {
   return (
     <div className="flex items-center gap-1">
       <IonIcon icon={icon} color="primary" className="text-xl" />
-      <IonText color="primary">
-        <p className="font-bold">{fileCount} file đính kèm</p>
+      <IonText
+        color="primary"
+        className="font-bold transition-colors active:text-secondary"
+      >
+        <p>{fileCount} file đính kèm</p>
       </IonText>
     </div>
   );

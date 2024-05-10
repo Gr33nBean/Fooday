@@ -2,9 +2,10 @@ import { IonIcon } from "@ionic/react";
 import {
   archiveOutline,
   chatbubbleOutline,
+  heart,
   heartOutline,
 } from "ionicons/icons";
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 
 type BlogActionTrayProps = {
   statistic?: {
@@ -32,13 +33,18 @@ const ActionButton: FC<ActionButtonProps> = ({ icon, onClick }) => {
 };
 
 const BlogActionTray: FC<BlogActionTrayProps> = ({ statistic, callbacks }) => {
+  const [hearted, setHearted] = useState(false);
+
   return (
     <div>
       <ul className="flex gap-4">
         <li>
           <ActionButton
-            onClick={callbacks?.heartCallback}
-            icon={heartOutline}
+            onClick={() => {
+              if (callbacks?.heartCallback) callbacks.heartCallback();
+              setHearted(!hearted);
+            }}
+            icon={hearted ? heart : heartOutline}
           />
         </li>
         <li>
@@ -55,9 +61,13 @@ const BlogActionTray: FC<BlogActionTrayProps> = ({ statistic, callbacks }) => {
         </li>
       </ul>
       <div className="flex items-center gap-1">
-        <p>{statistic?.comment} bình luận</p>
+        <p className="transition-colors active:text-medium">
+          {statistic?.comment} bình luận
+        </p>
         <p>•</p>
-        <p>{statistic?.like} lượt thích</p>
+        <p className="transition-colors active:text-medium">
+          {statistic?.like} lượt thích
+        </p>
       </div>
     </div>
   );

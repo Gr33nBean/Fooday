@@ -14,13 +14,20 @@ export const BlogMentions: FC<BlogMentionProps> = ({
     <div className="flex items-center gap-1">
       {firstThreeMentions.map((mention, index) => {
         return (
-          <IonText key={index} color="primary" className="font-bold">
+          <IonText
+            key={index}
+            color="primary"
+            className="font-bold transition-colors active:text-secondary"
+          >
             <p>@{mention}</p>
           </IonText>
         );
       })}
       {restMentionsCount > 0 && (
-        <IonText color="medium" className="text-sm">
+        <IonText
+          color="medium"
+          className="text-sm transition-colors active:text-dark"
+        >
           + {restMentionsCount} người khác
         </IonText>
       )}
