@@ -44,11 +44,11 @@ const BlogItem: FC<BlogItemProps> & {
   mentions,
   attachments,
 }) => {
-  const [showingAllBody, setShowingAllBody] = useState(false);
+  const [bodyExpanded, setBodyExpanded] = useState(false);
 
   const bodyTooLong = isTooLong()(body);
 
-  const bodyToShow = bodyTooLong && !showingAllBody ? trimmedBody(body) : body;
+  const bodyToShow = bodyTooLong && !bodyExpanded ? trimmedBody(body) : body;
 
   return (
     <div className="flex gap-2 w-full">
@@ -63,10 +63,10 @@ const BlogItem: FC<BlogItemProps> & {
 
         <div>
           {bodyToShow}
-          {bodyTooLong && (
+          {bodyTooLong && !bodyExpanded && (
             <button
               className="text-medium font-bold active:text-black"
-              onClick={() => setShowingAllBody(true)}
+              onClick={() => setBodyExpanded(true)}
             >
               Xem thêm...
             </button>
