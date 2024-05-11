@@ -10,19 +10,19 @@ export const trimmedBody = (text: string = "") =>
 
 export const extractMentions = <T>(mentions: T[]) => {
   return mentions.reduce<{
-    firstThreeMentions: T[];
+    firstMentions: T[];
     restMentionsCount: number;
   }>(
     (accumulator, mention, index) => {
       if (index < 3) {
-        accumulator.firstThreeMentions.push(mention);
+        accumulator.firstMentions.push(mention);
       } else {
         accumulator.restMentionsCount += 1;
       }
       return accumulator;
     },
     {
-      firstThreeMentions: [],
+      firstMentions: [],
       restMentionsCount: 0,
     }
   );

@@ -1,11 +1,6 @@
-import { IonIcon } from "@ionic/react";
-import {
-  archiveOutline,
-  chatbubbleOutline,
-  heart,
-  heartOutline,
-} from "ionicons/icons";
 import { FC, MouseEventHandler, useState } from "react";
+
+import { heart, comment, share } from "@assets/icons";
 
 type BlogActionTrayProps = {
   statistic?: {
@@ -27,7 +22,7 @@ type ActionButtonProps = {
 const ActionButton: FC<ActionButtonProps> = ({ icon, onClick }) => {
   return (
     <button onClick={onClick}>
-      <IonIcon slot="icon-only" icon={icon} className="text-xl"></IonIcon>
+      <img src={icon} alt="icon" />
     </button>
   );
 };
@@ -44,30 +39,27 @@ const BlogActionTray: FC<BlogActionTrayProps> = ({ statistic, callbacks }) => {
               if (callbacks?.heartCallback) callbacks.heartCallback();
               setHearted(!hearted);
             }}
-            icon={hearted ? heart : heartOutline}
+            icon={heart}
           />
         </li>
         <li>
-          <ActionButton
-            onClick={callbacks?.commentCallback}
-            icon={chatbubbleOutline}
-          />
+          <ActionButton onClick={callbacks?.commentCallback} icon={comment} />
         </li>
         <li>
           <ActionButton
             onClick={callbacks?.unknownActionCallback}
-            icon={archiveOutline}
+            icon={share}
           />
         </li>
       </ul>
       <div className="flex items-center gap-1">
-        <p className="transition-colors active:text-medium">
+        <button className="transition-colors active:text-medium">
           {statistic?.comment} bình luận
-        </p>
+        </button>
         <p>•</p>
-        <p className="transition-colors active:text-medium">
+        <button className="transition-colors active:text-medium">
           {statistic?.like} lượt thích
-        </p>
+        </button>
       </div>
     </div>
   );

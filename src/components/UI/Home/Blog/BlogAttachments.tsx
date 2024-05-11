@@ -1,4 +1,4 @@
-import { IonIcon, IonText } from "@ionic/react";
+import { IonText } from "@ionic/react";
 import { FC } from "react";
 
 export type BlogAttachmentsProps = {
@@ -8,15 +8,13 @@ export type BlogAttachmentsProps = {
 
 const BlogAttachments: FC<BlogAttachmentsProps> = ({ icon, fileCount }) => {
   return (
-    <div className="flex items-center gap-1">
-      <IonIcon icon={icon} color="primary" className="text-xl" />
-      <IonText
-        color="primary"
-        className="font-bold transition-colors active:text-secondary"
-      >
-        <p>{fileCount} file đính kèm</p>
-      </IonText>
-    </div>
+    <IonText
+      color="primary"
+      className="flex items-center gap-1 font-bold transition-colors active:text-secondary"
+    >
+      <img src={icon} alt="attachment icon" className="w-4 h-4" />
+      <p>{fileCount} file đính kèm</p>
+    </IonText>
   );
 };
 

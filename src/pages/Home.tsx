@@ -1,9 +1,6 @@
-import dayjs from "dayjs";
-
 import {
   IonContent,
   IonHeader,
-  IonIcon,
   IonLabel,
   IonPage,
   IonSegment,
@@ -12,11 +9,6 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import {
-  imageOutline,
-  documentTextOutline,
-  attachOutline,
-} from "ionicons/icons";
 import { FC, HTMLAttributes, useRef, useState } from "react";
 import { styled } from "styled-components";
 
@@ -26,54 +18,14 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 
+import { media, file, attachment } from "@assets/icons";
+
 import BlogItem from "@/components/UI/Home/Blog/BlogItem";
-import mockBlogImage from "../assets/mock-blog-image.jpeg";
-import mockUserAvatar from "../assets/mock-user-avatar.png";
+import { mockUserAvatar } from "@assets/images/home";
 import { extractMentions } from "@/utils/home";
 import { EventCard } from "@/components/UI/Home/Event/EventCard";
-import { mockEvents } from "@/mock";
-
-export const mockBlogs = [
-  {
-    blog: {
-      id: "f6036372-dd97-439b-9301-0651b1bd6c38",
-      avatar: mockUserAvatar,
-      username: "Orin.Renner",
-      comment: 12,
-      like: 100,
-      createdAt: dayjs(Date.now()).format("MMM D, YYYY"),
-    },
-    carousel: {
-      images: [mockUserAvatar, mockBlogImage, mockBlogImage],
-    },
-  },
-  {
-    blog: {
-      id: "3e3fdab0-19e9-41f6-a4cb-742e4fad5483",
-      avatar: mockUserAvatar,
-      username: "Lelah_Langworth",
-      comment: 150,
-      like: 3000,
-      createdAt: dayjs(Date.now()).format("MMM D, YYYY"),
-    },
-    carousel: {
-      images: [mockUserAvatar, mockBlogImage, mockBlogImage],
-    },
-  },
-  {
-    blog: {
-      id: "6c8decbf-ac5f-4b2b-9d76-c3dc86d1cb41",
-      avatar: mockUserAvatar,
-      username: "Ross.Hintz",
-      comment: 52,
-      like: 1923,
-      createdAt: dayjs(Date.now()).format("MMM D, YYYY"),
-    },
-    carousel: {
-      images: [mockUserAvatar, mockBlogImage, mockBlogImage],
-    },
-  },
-];
+import { mockBlogs, mockEvents } from "@/mock";
+import { Event } from "@/types/home/Event";
 
 const Divider = ({ spacing, color }: { spacing: number; color: string }) => {
   return (
@@ -91,7 +43,7 @@ const NewFeedActionButton: FC<
       {...props}
       className="flex justify-center items-center gap-2 rounded py-1 px-2 transition-colors  active:bg-blue-100"
     >
-      <IonIcon icon={icon} color="primary" className="text-2xl" />
+      <img src={icon} alt="icon" />
       <IonText color="medium">
         <p className="text-sm font-bold">{text}</p>
       </IonText>
@@ -154,7 +106,7 @@ const Blogs: FC<{
   return (
     <div>
       {blogs.map((blog) => (
-        <div key={blog.blog.id}>
+        <div key={blog.id}>
           {render(blog)}
           {seperator}
         </div>
@@ -180,11 +132,70 @@ enum Segment {
   Communiation,
 }
 
+const SegmentTabs = {
+  All: ({
+    blogs,
+    mentionInfo,
+  }: {
+    blogs: typeof mockBlogs;
+    mentionInfo: ReturnType<typeof extractMentions<string>>;
+  }) => (
+    <SwiperSlide>
+      <Blogs
+        blogs={blogs}
+        render={(blog) => (
+          <div className="ion-padding-horizontal py-4">
+            <BlogItem
+              blog={blog}
+              leftColumn={
+                <BlogItem.LeftColumn avatar={blog.publisher.avatar} />
+              }
+              metaBar={
+                <BlogItem.MetaBar
+                  username={blog.publisher.userName}
+                  createdAt={blog.createdAt}
+                />
+              }
+              typeIndicator={
+                <BlogItem.TypeIndicator>Sharing</BlogItem.TypeIndicator>
+              }
+              title={<BlogItem.Title>Hello, it's great</BlogItem.Title>}
+              body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. In, earum quaerat recusandae est sed iure, ipsam atque nesciunt labore adipisci doloribus, soluta quam aut cupiditate molestias! Voluptas, id omnis dolor est repellat quibusdam sit corporis odio minus ducimus sed pariatur natus libero, beatae aspernatur? Dolores dignissimos maiores nesciunt at eos."
+              carousel={<BlogItem.Carousel images={blog.images} />}
+              mentions={
+                <BlogItem.Mentions
+                  firstMentions={mentionInfo.firstMentions}
+                  restMentionsCount={mentionInfo.restMentionsCount}
+                />
+              }
+              attachments={
+                <BlogItem.Attachments icon={attachment} fileCount={3} />
+              }
+            />
+          </div>
+        )}
+        seperator={<div className="h-[1px] bg-[#E1E8ED]"></div>}
+      />
+    </SwiperSlide>
+  ),
+  Event: ({ events }: { events: Event[] }) => {
+    return (
+      <div className="ion-padding-horizontal py-4">
+        <div className="flex flex-col gap-4">
+          {events.map((event) => (
+            <EventCard event={event} />
+          ))}
+        </div>
+      </div>
+    );
+  },
+};
+
 const Home: React.FC = () => {
   const [segment, setSegment] = useState(Segment.All);
   const swiperRef = useRef<SwiperRef>(null!);
 
-  const processedMentions = extractMentions(mentions);
+  const extractedMentions = extractMentions(mentions);
 
   return (
     <IonPage>
@@ -204,11 +215,8 @@ const Home: React.FC = () => {
         <div className="ion-padding-horizontal">
           <NewFeedCard
             buttons={[
-              <NewFeedActionButton icon={imageOutline} text={"Ảnh/video"} />,
-              <NewFeedActionButton
-                icon={documentTextOutline}
-                text={"Đính kèm"}
-              />,
+              <NewFeedActionButton icon={media} text={"Ảnh/video"} />,
+              <NewFeedActionButton icon={file} text={"Đính kèm"} />,
             ]}
           />
         </div>
@@ -248,55 +256,15 @@ const Home: React.FC = () => {
               setSegment(swiper.activeIndex as Segment);
             }
           }}
-          onSwiper={(swiper) => {}}
+          // onSwiper={(swiper) => { console.log()}}
         >
           <SwiperSlide>
-            <Blogs
-              blogs={mockBlogs}
-              render={({ blog, carousel }) => (
-                <div className="ion-padding-horizontal py-4">
-                  <BlogItem
-                    blog={blog}
-                    leftColumn={<BlogItem.LeftColumn avatar={blog.avatar} />}
-                    metaBar={
-                      <BlogItem.MetaBar
-                        username={blog.username}
-                        createdAt={blog.createdAt}
-                      />
-                    }
-                    typeIndicator={
-                      <BlogItem.TypeIndicator>Sharing</BlogItem.TypeIndicator>
-                    }
-                    title={<BlogItem.Title>Hello, it's great</BlogItem.Title>}
-                    body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. In, earum quaerat recusandae est sed iure, ipsam atque nesciunt labore adipisci doloribus, soluta quam aut cupiditate molestias! Voluptas, id omnis dolor est repellat quibusdam sit corporis odio minus ducimus sed pariatur natus libero, beatae aspernatur? Dolores dignissimos maiores nesciunt at eos."
-                    carousel={<BlogItem.Carousel images={carousel.images} />}
-                    mentions={
-                      <BlogItem.Mentions
-                        firstMentions={processedMentions.firstThreeMentions}
-                        restMentionsCount={processedMentions.restMentionsCount}
-                      />
-                    }
-                    attachments={
-                      <BlogItem.Attachments
-                        icon={attachOutline}
-                        fileCount={3}
-                      />
-                    }
-                  />
-                </div>
-              )}
-              seperator={<div className="h-[1px] bg-[#E1E8ED]"></div>}
-            />
+            {SegmentTabs.All({
+              blogs: mockBlogs,
+              mentionInfo: extractedMentions,
+            })}
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="ion-padding-horizontal py-4">
-              <div className="flex flex-col gap-4">
-                {mockEvents.map((event) => (
-                  <EventCard event={event} />
-                ))}
-              </div>
-            </div>
-          </SwiperSlide>
+          <SwiperSlide>{SegmentTabs.Event({ events: mockEvents })}</SwiperSlide>
           <SwiperSlide>Slide 3</SwiperSlide>
           <SwiperSlide>Slide 4</SwiperSlide>
         </Swiper>

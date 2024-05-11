@@ -40,7 +40,10 @@ export const BlogMetaBar: FC<BlogMetaBarProps> = ({
       </div>
       <div className="flex justify-center items-center gap-4 ">
         <p className="text-medium">{diffFromCreatedAt}</p>
-        <button className="flex justify-center items-center" onClick={() => {}}>
+        <button
+          className="flex justify-center items-center transition-colors active:text-medium"
+          onClick={() => {}}
+        >
           <IonIcon icon={ellipsisHorizontal} />
         </button>
       </div>

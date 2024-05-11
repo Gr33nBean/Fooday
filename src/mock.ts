@@ -1,4 +1,57 @@
+import dayjs from "dayjs";
+import { mockBlogImage, mockUserAvatar } from "./assets/images/home";
 import { Event } from "./types/home/Event";
+
+export const mockBlogs = [
+  {
+    id: "f6036372-dd97-439b-9301-0651b1bd6c38",
+    publisher: {
+      userName: "Orin.Renner",
+      avatar: mockUserAvatar,
+    },
+    images: [mockBlogImage, mockBlogImage, mockBlogImage],
+    title: "Dynamic Tactics Planner",
+    content:
+      "Provident voluptatem quidem dolor rerum vitae saepe. Magni nihil illo qui molestias ut iusto. Id cum corporis saepe minus et et totam aut.",
+    comment: 72,
+    like: 120,
+    createdAt: dayjs(
+      "Mon Oct 16 2023 10:33:46 GMT+0700 (Indochina Time)"
+    ).format("MMM D, YYYY"),
+  },
+  {
+    id: "a43c93a4-7ede-4ed1-93bc-b10334ea0a19",
+    publisher: {
+      userName: "Bennett4",
+      avatar: mockUserAvatar,
+    },
+    title: "Corporate Usability Associate",
+    content:
+      "Temporibus velit molestias qui perspiciatis officia. Similique repellendus sequi similique qui error quo. Accusamus iste in. Aut dolor est excepturi voluptatum.",
+    images: [mockBlogImage, mockBlogImage, mockBlogImage],
+    comment: 12,
+    like: 100,
+    createdAt: dayjs(
+      "Mon Apr 08 2024 14:49:26 GMT+0700 (Indochina Time)"
+    ).format("MMM D, YYYY"),
+  },
+  {
+    id: "154e0f39-8cf1-4dec-8c3d-9e3aed9953c3",
+    publisher: {
+      userName: "Dillon_Rippin",
+      avatar: mockUserAvatar,
+    },
+    title: "Human Creative Analyst",
+    content:
+      "Doloremque earum tenetur mollitia nesciunt. Sequi quam quo consequatur provident nostrum fuga. Corporis dolores recusandae adipisci quia ex voluptatem ratione aut cupiditate. Molestiae non et quam corporis dolor doloremque. Odio ex nulla et tenetur sit.",
+    images: [mockBlogImage, mockBlogImage, mockBlogImage],
+    comment: 12,
+    like: 100,
+    createdAt: dayjs(
+      "Sun Sep 17 2023 23:04:19 GMT+0700 (Indochina Time)"
+    ).format("MMM D, YYYY"),
+  },
+];
 
 export const mockEvents: Event[] = [
   {
