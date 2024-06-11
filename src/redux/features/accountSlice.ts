@@ -1,27 +1,26 @@
+import { User } from "@/services/type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AccountState {
-  isLogin: boolean;
+  signedUser?: User;
 }
 
 const initialState: AccountState = {
-  isLogin: false,
+  signedUser: undefined,
 };
 
 const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
-    setIsLogin(state, action: PayloadAction<boolean>) {
-      state.isLogin = action.payload;
+    setSignedUser(state, action: PayloadAction<User | undefined>) {
+      state.signedUser = action.payload;
     },
-    // decrement
-    // reset
   },
 });
 
-export const selectIsLogin = (state: { account: AccountState }) =>
-  state.account.isLogin;
+export const selectSignedUser = (state: { account: AccountState }) =>
+  state.account.signedUser;
 
-export const { setIsLogin } = accountSlice.actions;
+export const { setSignedUser } = accountSlice.actions;
 export default accountSlice.reducer;

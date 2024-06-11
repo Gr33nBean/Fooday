@@ -21,6 +21,7 @@
 !/.vscode/extensions.json
 .idea
 .firebase
+.env
 
 npm-debug.log*
 yarn-debug.log*
