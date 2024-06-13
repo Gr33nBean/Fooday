@@ -13,10 +13,10 @@ const Login: React.FC = () => {
   const history = useHistory();
   return (
     <IonPage>
-      <div className="w-full min-h-[100vh] flex items-center justify-center p-[48px] bg-blue bg-opacity-20">
-        <div className="rounded-3xl w-full md:w-[50%] shadow-lg bg-white">
+      <div className="w-full min-h-[100svh] flex items-center justify-center ion-padding bg-blue bg-opacity-20">
+        <div className="rounded-3xl w-full shadow-lg bg-white">
           <div className="w-full p-8 flex flex-col gap-8 items-center">
-            <p className="text-xl font-bold uppercase">Đăng nhập</p>
+            <p className="text-xl text-black font-bold uppercase">Đăng nhập</p>
 
             <div className="w-full flex flex-col gap-3">
               <Input
@@ -58,14 +58,13 @@ const Login: React.FC = () => {
                   .then((userCredential) => {
                     const user = userCredential.user;
                     console.log(user);
-
                     history.push("/");
                   })
-                  .catch(() => {
+                  .catch((error) => {
                     // const errorMessage = error.message;
-                    toast.error(
-                      "Tài khoản không hợp lệ! Tài khoản không hợp lệ! Tài khoản không hợp lệ!"
-                    );
+                    console.log(error);
+
+                    toast.error("Tài khoản không hợp lệ!");
                     setPassword("");
                   });
               }}

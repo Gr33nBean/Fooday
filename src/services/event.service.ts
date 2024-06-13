@@ -92,4 +92,23 @@ export const eventService = {
       return [];
     }
   },
+  getSearchEvent: async (text: string) => {
+    try {
+      const res = await fetch(domain + "/Event/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: text,
+          page: 1,
+          limit: 100,
+        }),
+      }).then((res) => res.json());
+
+      return res;
+    } catch (error) {
+      return [];
+    }
+  },
 };

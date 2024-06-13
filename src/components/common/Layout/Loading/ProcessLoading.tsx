@@ -8,9 +8,9 @@ const ProcessLoading = () => {
     <div
       style={{
         display: isLoading ? "flex" : "none",
-        zIndex: 999,
+        zIndex: 999999,
       }}
-      className="fixed inset-0 h-[100vh] w-[100vw] flex items-center justify-center bg-white bg-opacity-70"
+      className="fixed inset-0 h-[100svh] w-[100svw] flex items-center justify-center bg-white bg-opacity-70"
     >
       <Loading />
     </div>

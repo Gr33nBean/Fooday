@@ -1,72 +1,287 @@
-import DefaultAva from "@/components/common/Avatar/DefaultAva";
-import { IonSearchbar } from "@ionic/react";
-import { Suspense } from "react";
+import { eventService } from "@/services/event.service";
+import { IonLabel, IonNavLink, IonSearchbar } from "@ionic/react";
+import { useEffect, useRef, useState } from "react";
+
+import Avatar from "@/components/common/Avatar";
+import Event from "@/components/common/Event";
+import Loading from "@/components/common/Layout/Loading";
+import Post from "@/components/common/Post";
+import { TABS } from "@/constants";
+import useDebounce from "@/hooks/useDebounce";
+import { CustomIonSegmentButton, NoScrollBarIonSegment } from "@/pages/Home";
+import UserDetail from "@/pages/UserDetail";
+import { postService } from "@/services/post.service";
+import {
+  Event as EventDataType,
+  Post as PostDataType,
+  User,
+} from "@/services/type";
+import { userService } from "@/services/user.service";
+import {
+  mapEventToUIObject,
+  mapPostToUIObject,
+  sortByTimestamp,
+} from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import "swiper/css";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+
+const tabs = [
+  {
+    label: "Bài đăng",
+    value: TABS.POST,
+  },
+  {
+    label: "Sự kiện",
+    value: TABS.EVENT,
+  },
+];
 
 const SearchContent = () => {
+  const swiperRef = useRef<SwiperRef>(null!);
+
+  const [selectedTab, setSelectedTab] = useState<string>(tabs[0].value);
+  useEffect(() => {
+    setSelectedTab(tabs[0].value);
+  }, [tabs]);
+
+  const [search, setSearch] = useState("");
+  const [enabled, setEnabled] = useState(false);
+
+  const { data: eventData, isLoading: loading1 } = useQuery<EventDataType[]>({
+    queryKey: ["search_events", search],
+    queryFn: async () => {
+      setEnabled(false);
+      if (search === "") {
+        return [];
+      }
+      const res = await eventService.getSearchEvent(search);
+      console.log(res);
+      if (res) {
+        return res;
+      } else {
+        return [];
+      }
+    },
+    enabled: enabled,
+  });
+
+  const { data: postData, isLoading: loading2 } = useQuery<PostDataType[]>({
+    queryKey: ["search_posts", search],
+    queryFn: async () => {
+      setEnabled(false);
+      if (search === "") {
+        return [];
+      }
+      const res = await postService.getSearchPost(search);
+      if (res) {
+        return res;
+      } else {
+        return [];
+      }
+    },
+    enabled: enabled,
+  });
+
+  const { data: userData, isLoading: loading3 } = useQuery<User[]>({
+    queryKey: ["search_users", search],
+    queryFn: async () => {
+      setEnabled(false);
+      if (search === "") {
+        return [];
+      }
+      const res = await userService.getSearchUser(search);
+      if (res) {
+        return res;
+      } else {
+        return [];
+      }
+    },
+    enabled: enabled,
+  });
+  console.log(userData);
+
+  useDebounce(
+    () => {
+      setEnabled(true);
+    },
+    [search],
+    800
+  );
+
   return (
-    <div className="ion-padding">
-      <p className="w-full text-2xl font-extrabold mb-4">Tìm kiếm</p>
-      <div className="w-full sticky top-[-1px] z-10 rounded-md overflow-hidden bg-white">
+    <div className="">
+      <p className="w-full bg-white ion-padding-vertical text-xl font-extrabold  ion-padding-horizontal">
+        Tìm kiếm
+      </p>
+      <div className="w-full bg-white py-2 z-10 rounded-md overflow-hidden ion-padding-horizontal">
         <IonSearchbar
           placeholder="Tiềm kiếm"
-          className="!p-0 !min-h-fit "
+          value={search}
+          onIonChange={(e) => setSearch(e.detail.value ?? "")}
+          className="!p-0 !min-h-fit text-sm"
         ></IonSearchbar>
       </div>
 
-      <div className="w-full max-w-full pt-3 flex flex-col">
-        {new Array(10)
-          .fill({
-            id: "",
-            avatar: "",
-            name: "Huy",
-            des: "vvvvvvv vvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
-            grade: "Nhân viên",
-            department: "Phòng nhân sự",
-            post: 20,
-          })
-          .map((item, index) => {
+      {userData && userData.length > 0 && (
+        <div className="ion-padding-horizontal pt-8 bg-white text-black ">
+          <p className="w-full text-xl font-bold pb-2">Mọi người</p>
+
+          {userData?.map((item, index) => {
             return (
               <div key={index} className="w-full max-w-full pt-[12px]">
-                <div className="w-full flex gap-2 items-start">
-                  <div className="w-[42px] h-[42px] rounded-full overflow-hidden relative">
-                    <Suspense
-                      fallback={
-                        <div className="absolute top-0 left-0 w-full h-full bg-extra-light-gray animate-pulse"></div>
-                      }
+                <div className="w-full flex  items-start">
+                  <button className="z-[5] h-fit">
+                    <IonNavLink
+                      routerDirection="forward"
+                      component={() => <UserDetail uid={item.uid} />}
                     >
-                      <DefaultAva />
-                    </Suspense>
-                  </div>
-
-                  <div className="overflow-hidden flex-1">
-                    <p className="w-full font-manrope text-xl font-bold">
-                      {item.name.toLowerCase()}
-                    </p>
-                    <p className="text-ellipsis-2-rows  w-full font-manrope text-base font-normal break-words ">
-                      {item.des}
-                    </p>
-                  </div>
-
-                  <button className="rounded-lg px-5 py-1 font-manrope text-sm font-bold text-dark-gray bg-dark-gray bg-opacity-10">
-                    Xem trang
+                      <Avatar src={item.avatar} className="!size-[48px]" />
+                    </IonNavLink>
                   </button>
+
+                  <div
+                    className={`w-[calc(100%-48px-137px)] px-2 z-[5] text-sm font-normal text-dark-gray`}
+                  >
+                    <button
+                      className={`font-bold text-black  text-start flex-1 cursor-pointer`}
+                    >
+                      <IonNavLink
+                        routerDirection="forward"
+                        component={() => <UserDetail uid={item.uid} />}
+                      >
+                        <span>{item?.username}</span>
+                      </IonNavLink>
+                    </button>
+                    <p className="w-full text-start  paragraph-overflow-ellipsis paragraph-overflow-ellipsis-2">
+                      {item?.description}
+                    </p>
+                  </div>
+
+                  <IonNavLink
+                    routerDirection="forward"
+                    component={() => <UserDetail uid={item.uid} />}
+                  >
+                    <button className="rounded-lg px-5 py-1 text-xs font-bold text-dark-gray bg-dark-gray bg-opacity-10">
+                      Xem trang
+                    </button>
+                  </IonNavLink>
                 </div>
 
-                <div className="pt-2 ml-10 flex items-center gap-2 pb-[12px] border-b border-solid border-dark-gray">
+                <div className=" ml-10 flex items-center gap-2 pb-4 pt-2 border-b border-solid border-extra-dark-gray">
                   <p className="font-manrope text-xs font-bold rounded-md bg-blue bg-opacity-10 text-blue py-[2px] px-[6px]">
                     {item.grade}
                   </p>
                   <p className="font-manrope text-xs font-bold rounded-md bg-blue bg-opacity-10 text-blue py-[2px] px-[6px]">
-                    {item.department}
-                  </p>
-                  <p className="font-manrope text-xs font-bold rounded-md bg-blue bg-opacity-10 text-blue py-[2px] px-[6px]">
-                    {item.post} bài đăng
+                    {item.departmentId}
                   </p>
                 </div>
               </div>
             );
           })}
-      </div>
+        </div>
+      )}
+
+      {((postData && postData.length > 0) ||
+        (eventData && eventData.length > 0)) && (
+        <>
+          <p className="w-full bg-white text-xl font-bold ion-padding-horizontal pt-8">
+            Đăng tải
+          </p>
+          <div className="ion-padding-horizontal sticky top-0 bg-white z-[10]">
+            <NoScrollBarIonSegment
+              scrollable
+              value={selectedTab}
+              mode="md"
+              onIonChange={(event) => {
+                const newSegment = event.detail.value;
+                const index = tabs.findIndex((tab) => tab.value === newSegment);
+                swiperRef.current.swiper.slideTo(index);
+                setSelectedTab(newSegment as string);
+              }}
+            >
+              {tabs.map((tab, index) => (
+                <CustomIonSegmentButton key={index} value={tab.value}>
+                  <IonLabel>{tab.label}</IonLabel>
+                </CustomIonSegmentButton>
+              ))}
+            </NoScrollBarIonSegment>
+          </div>
+
+          <Swiper
+            ref={swiperRef}
+            spaceBetween={50}
+            slidesPerView={1}
+            onSlideChange={(swiper) => {
+              const currentTab = tabs[swiper.activeIndex].value;
+              if (currentTab !== selectedTab) {
+                setSelectedTab(currentTab);
+              }
+            }}
+          >
+            {tabs.map((tab, index) => (
+              <SwiperSlide key={index}>
+                {tab.value === TABS.EVENT ? (
+                  <>
+                    {eventData
+                      ?.sort((a, b) => sortByTimestamp(a.createAt, b.createAt))
+                      .map((item, index) => (
+                        <Event key={index} {...mapEventToUIObject(item)} />
+                      ))}
+
+                    {eventData?.length == 0 && (
+                      <p className="w-full text-center py-3 cursor-pointer text-dark-gray text-[18px] font-normal">
+                        Không có sự kiện
+                      </p>
+                    )}
+
+                    {!eventData && (
+                      <div className="w-full py-10">
+                        <Loading />
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {postData
+                      ?.sort((a, b) => sortByTimestamp(a.createAt, b.createAt))
+                      .map((item, index) => (
+                        <Post key={index} {...mapPostToUIObject(item)} />
+                      ))}
+                    {postData?.length == 0 && (
+                      <p className="w-full text-center py-3 cursor-pointer text-dark-gray text-[18px] font-normal">
+                        Không có bài đăng
+                      </p>
+                    )}
+                    {!postData && (
+                      <div className="w-full py-10">
+                        <Loading />
+                      </div>
+                    )}
+                  </>
+                )}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </>
+      )}
+
+      {loading1 || loading2 || loading3 ? (
+        <div className="w-full py-10 flex items-center justify-center">
+          <Loading />
+        </div>
+      ) : (
+        <>
+          {(!userData || userData.length == 0) &&
+            (!postData || postData.length == 0) &&
+            (!eventData || eventData.length == 0) &&
+            search != "" && (
+              <p className="w-full text-center py-3 cursor-pointer text-dark-gray text-[18px] font-normal">
+                Không có kết quả
+              </p>
+            )}
+        </>
+      )}
     </div>
   );
 };

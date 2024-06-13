@@ -151,8 +151,8 @@ export interface Resource {
   name: string;
   description: string; // text
   isFree: boolean; // sync with ResourceUsing
-  createAt: string; // timestamp
-  updateAt: string; // timestamp
+  createAt: number; // timestamp
+  updateAt: number; // timestamp
   status: StatusType;
 }
 

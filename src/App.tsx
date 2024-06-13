@@ -37,18 +37,30 @@ import "./theme/global.css";
 import "./theme/tailwind.css";
 import "./theme/variables.css";
 
-import { useState } from "react";
-import { getTabFromHref, routes } from "./libs/constants/tabBarIcon.constant";
+import { useEffect, useState } from "react";
+import { getTabFromHref, routes } from "./constants/tabBarIcon.constant";
 import Account from "./pages/Account";
 import RequestHistory from "./pages/RequestHistory";
 import GlobalModal from "./components/common/GlobalModal";
 import { setIsOpenCreateModal } from "./redux/features/globalModalSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { selectSignedUser, setSignedUser } from "./redux/features/accountSlice";
+import {
+  selectUid,
+  setSignedUser,
+  setUid,
+} from "./redux/features/accountSlice";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./libs/firebase/firebase.config";
+import { auth, db } from "./libs/firebase/firebase.config";
 import { userService } from "./services/user.service";
 import Login from "./pages/Login";
+import { useQuery } from "@tanstack/react-query";
+import { User } from "./services/type";
+import Loading from "./components/common/Layout/Loading";
+import ViewImage from "./components/common/Dialog/ViewImage";
+import ProcessLoading from "./components/common/Layout/Loading/ProcessLoading";
+import Comment from "./components/common/Dialog/Create/Comment";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+
 setupIonicReact({
   rippleEffect: false,
   mode: "ios",
@@ -60,21 +72,52 @@ const App: React.FC = () => {
     getTabFromHref(window.location.pathname)
   );
   const dispatch = useAppDispatch();
-  const signedUser = useAppSelector(selectSignedUser);
+  const uid = useAppSelector(selectUid);
+
+  const { data, isLoading, isSuccess } = useQuery<User>({
+    queryKey: ["signedUser", uid],
+
+    queryFn: async () => {
+      if (!uid) return undefined;
+      const res = await userService.getUser([uid]);
+      return res[0];
+    },
+  });
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      if (signedUser === undefined) {
-        const data = await userService.getUser([user.uid]);
-        dispatch(setSignedUser(data[0]));
-        console.log(data[0]);
-      }
+      dispatch(setUid(user.uid));
+    } else {
+      dispatch(setUid(""));
     }
   });
 
+  useEffect(() => {
+    const setUserInDb = async (data: User) => {
+      try {
+        await setDoc(
+          doc(db, "users", data?.email as string),
+          {
+            email: data?.email ?? "",
+            lastSeen: serverTimestamp(),
+            photoURL: data?.avatar ?? "",
+          },
+          { merge: true } // just update what is changed
+        );
+      } catch (error) {
+        console.log("ERROR SETTING USER INFO IN DB", error);
+      }
+    };
+
+    if (data && isSuccess) {
+      dispatch(setSignedUser(data));
+      setUserInDb(data);
+    }
+  }, [data, isSuccess]);
+
   return (
     <IonApp>
-      {signedUser ? (
+      {uid ? (
         <>
           <IonReactRouter>
             <IonNav
@@ -164,9 +207,20 @@ const App: React.FC = () => {
             ></IonNav>
           </IonReactRouter>
           <GlobalModal />
+          <ViewImage />
+          <ProcessLoading />
+          <Comment />
         </>
       ) : (
-        <Login />
+        <>
+          {isLoading ? (
+            <div className="w-screen h-screen flex items-center justify-center">
+              <Loading />
+            </div>
+          ) : (
+            <Login />
+          )}
+        </>
       )}
     </IonApp>
   );

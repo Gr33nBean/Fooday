@@ -56,7 +56,9 @@ const Mention = ({
     >
       <div>
         {label && (
-          <p className="text-sm font-normal text-dark-gray w-full ">{label}</p>
+          <p className="text-xs mb-1 font-normal text-dark-gray w-full ">
+            {label}
+          </p>
         )}
         {mentionData.length > 0 && (
           <div className="flex items-center justify-between">
@@ -78,7 +80,7 @@ const Mention = ({
       <div className="relative flex items-stretch w-full overflow-hidden rounded-lg  border border-light-gray">
         <ComboboxInput
           className={
-            "outline-none flex-1 z-10  px-4 py-2 text-base bg-transparent font-medium text-black "
+            "outline-none flex-1 z-10  p-2 text-sm bg-transparent font-medium text-black "
           }
           onChange={(event) => setQuery(event.target.value)}
         />

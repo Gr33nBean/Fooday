@@ -14,9 +14,11 @@ const Input = forwardRef(function Input(
   ref?: React.Ref<HTMLInputElement>
 ) {
   return (
-    <div className="w-full">
+    <div className="w-full text-sm">
       {label && (
-        <p className="text-sm font-normal text-dark-gray w-full ">{label}</p>
+        <p className="text-xs font-normal text-dark-gray w-full mb-1">
+          {label}
+        </p>
       )}
       <label
         className="flex items-stretch w-full relative overflow-hidden rounded-lg  border border-light-gray"
@@ -25,18 +27,18 @@ const Input = forwardRef(function Input(
         }}
       >
         {startIcon && (
-          <div className="flex items-center px-4 bg-white shadow-lg  border-r border-extra-light-gray">
+          <div className="flex items-center px-3 bg-white shadow-lg  border-r border-extra-light-gray">
             {startIcon}
           </div>
         )}
         <input
           type="text"
           ref={ref}
-          className="outline-none flex-1 z-10  px-4 py-2 text-base bg-transparent font-medium text-black "
+          className="outline-none flex-1 w-1 z-10  p-2 bg-transparent font-medium text-black "
           {...props}
         />
         {endIcon && (
-          <div className="flex items-center px-4   border-l border-extra-light-gray">
+          <div className="flex items-center px-3  border-l border-extra-light-gray">
             {endIcon}
           </div>
         )}

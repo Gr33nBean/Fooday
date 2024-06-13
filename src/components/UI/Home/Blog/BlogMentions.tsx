@@ -1,4 +1,4 @@
-import { SCREEN_WIDTH } from "@/libs/constants/responsive";
+import { SCREEN_WIDTH } from "@/constants/responsive";
 import { IonText } from "@ionic/react";
 import { FC, useMemo } from "react";
 import { useWindowSize } from "@uidotdev/usehooks";

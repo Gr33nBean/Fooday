@@ -24,6 +24,8 @@ export default {
         'orange': "#F77C00",
         'green': "#3BB97C",
         'yellow': "#FBD400",
+        'white': "#ffffff",
+
       },
       fontFamily: {
         manrope: ['Manrope', 'sans-serif'],

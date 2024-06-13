@@ -92,4 +92,24 @@ export const postService = {
       return [];
     }
   },
+
+  getSearchPost: async (text: string) => {
+    try {
+      const res = await fetch(domain + "/Post/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: text,
+          page: 1,
+          limit: 100,
+        }),
+      }).then((res) => res.json());
+
+      return res;
+    } catch (error) {
+      return [];
+    }
+  },
 };

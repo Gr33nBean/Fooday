@@ -8,36 +8,45 @@ const FileInput = forwardRef(function FileInput(
     type = "image",
     files,
     handleChange,
+    isChat,
   }: {
     label?: string;
     type: "image" | "file";
     files: File[];
     handleChange: (files: File[]) => void;
+    isChat?: boolean;
   },
   ref: any
 ) {
   return (
     <div
-      className="w-full"
+      className="w-full relative"
       style={{
         display: files.length > 0 ? "block" : "none",
       }}
     >
       {label && (
-        <p className="text-sm font-normal text-dark-gray w-full ">{label}</p>
+        <p className="text-xs font-normal text-dark-gray w-full mb-1">
+          {label}
+        </p>
       )}
       {type === "image" ? (
-        <>
-          <div
-            className={`flex gap-2 max-w-full overflow-x-auto overflow-y-hidden`}
-          >
+        <div className="max-w-full overflow-y-hidden overflow-x-auto">
+          <div className={`flex gap-2 `}>
             {[...files.map((file) => URL.createObjectURL(file))].map(
               (item, index) => (
                 <div key={index} className="size-fit relative">
                   <img
                     src={item}
                     alt="image"
-                    className={`h-[156px] w-[117px] rounded-[10px] object-cover cursor-pointer`}
+                    className={`object-cover cursor-pointer`}
+                    style={{
+                      height: isChat ? "64px" : "156px",
+                      width: isChat ? "64px" : "117px",
+                      minWidth: isChat ? "64px" : "117px",
+                      borderRadius: isChat ? "4px" : "10px",
+                      border: "1px solid #E0E0E0",
+                    }}
                   />
 
                   <button
@@ -68,7 +77,7 @@ const FileInput = forwardRef(function FileInput(
               )
             )}
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div className={`gap-2 flex flex-col`}>

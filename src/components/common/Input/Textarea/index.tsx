@@ -5,21 +5,25 @@ const Textarea = forwardRef(function Textarea(
     startIcon,
     endIcon,
     label,
+    labelClassName,
     ...props
   }: {
     startIcon?: JSX.Element;
     endIcon?: JSX.Element;
     label?: string;
+    labelClassName?: string;
   } & React.TextareaHTMLAttributes<HTMLTextAreaElement>,
   ref?: React.Ref<HTMLTextAreaElement>
 ) {
   return (
     <div className="w-full">
       {label && (
-        <p className="text-sm font-normal text-dark-gray w-full ">{label}</p>
+        <p className="text-xs mb-1 font-normal text-dark-gray w-full ">
+          {label}
+        </p>
       )}
       <label
-        className="flex items-stretch w-full relative overflow-hidden rounded-lg  border border-light-gray"
+        className={`flex items-stretch w-full relative overflow-hidden rounded-lg border border-light-gray ${labelClassName}`}
         style={{
           backgroundColor: startIcon ? "#1da1f210" : "white",
         }}
@@ -32,10 +36,10 @@ const Textarea = forwardRef(function Textarea(
         <textarea
           ref={ref}
           {...props}
-          className={`outline-none flex-1 z-10  px-4 py-2 text-base bg-transparent font-medium text-black ${props.className}`}
+          className={`outline-none flex-1 z-10  p-2 text-sm bg-transparent font-medium text-black ${props.className}`}
         />
         {endIcon && (
-          <div className="flex items-center px-4   border-l border-extra-light-gray">
+          <div className="flex items-center px-3 border-l border-extra-light-gray">
             {endIcon}
           </div>
         )}

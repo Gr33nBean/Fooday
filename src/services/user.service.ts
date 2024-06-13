@@ -17,7 +17,6 @@ export const userService = {
       return [];
     }
   },
-
   getAll: async () => {
     try {
       const res = await fetch(domain + "/User/getALL", {
@@ -89,6 +88,26 @@ export const userService = {
         body: JSON.stringify(data),
       }).then((res) => res.json());
       console.log(res);
+
+      return res;
+    } catch (error) {
+      return [];
+    }
+  },
+
+  getSearchUser: async (text: string) => {
+    try {
+      const res = await fetch(domain + "/User/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: text,
+          page: 1,
+          limit: 100,
+        }),
+      }).then((res) => res.json());
 
       return res;
     } catch (error) {

@@ -38,12 +38,24 @@ ion-title.title-large {
   --border-width: 0px;
 }
 
-.text-ellipsis-2-rows {
-  overflow: hidden;
-  text-overflow: ellipsis;
+.paragraph-overflow-ellipsis {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.paragraph-overflow-ellipsis-1 {
+  -webkit-line-clamp: 1 !important;
+}
+
+.paragraph-overflow-ellipsis-3 {
+  -webkit-line-clamp: 3 !important;
+}
+
+.paragraph-overflow-ellipsis-2 {
+  -webkit-line-clamp: 2 !important;
 }
 
 ::placeholder {

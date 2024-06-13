@@ -6,17 +6,28 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { IonModal } from "@ionic/react";
 import SpacingBottom from "../../../common/GlobalModal/SpacingBottom";
 import CreateModal from "./CreateModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleHeader from "@/components/common/GlobalModal/TitleHeader";
+import {
+  selectIsCreatePostInEvent,
+  setIsCreatePostInEvent,
+} from "@/redux/features/dialogSlice";
 
 const ChooseTypeCreateModal = () => {
   const isOpen = useAppSelector(selectIsOpenCreateModal);
   const dispatch = useAppDispatch();
   const [typeCreate, setTypeCreate] = useState<string | undefined>(undefined);
+  const isCreatePostInEvent = useAppSelector(selectIsCreatePostInEvent);
+  useEffect(() => {
+    if (isCreatePostInEvent != -1) {
+      setTypeCreate("post");
+    }
+  }, [isCreatePostInEvent]);
+
   return (
     <>
       <IonModal
-        isOpen={isOpen}
+        isOpen={isOpen || isCreatePostInEvent != -1}
         onDidDismiss={() => {
           dispatch(setIsOpenCreateModal(false));
         }}
@@ -56,6 +67,10 @@ const ChooseTypeCreateModal = () => {
           isOpen={typeCreate ? true : false}
           handleClose={() => {
             setTypeCreate(undefined);
+            if (isCreatePostInEvent != -1) {
+              dispatch(setIsCreatePostInEvent(-1));
+              dispatch(setIsOpenCreateModal(false));
+            }
           }}
         />
         <SpacingBottom />
