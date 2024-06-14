@@ -5,12 +5,11 @@ import { IonPage } from "@ionic/react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useHistory } from "react-router";
 
 const Login: React.FC = () => {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const history = useHistory();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   return (
     <IonPage>
       <div className="w-full min-h-[100svh] flex items-center justify-center ion-padding bg-blue bg-opacity-20">
@@ -54,19 +53,19 @@ const Login: React.FC = () => {
                   toast.error("Vui lòng nhập đủ thông tin!");
                   return;
                 }
-                signInWithEmailAndPassword(auth, userName, password)
-                  .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log(user);
-                    history.push("/");
-                  })
-                  .catch((error) => {
-                    // const errorMessage = error.message;
-                    console.log(error);
-
-                    toast.error("Tài khoản không hợp lệ!");
-                    setPassword("");
-                  });
+                if (!isLoading) {
+                  setIsLoading(true);
+                  signInWithEmailAndPassword(auth, userName, password)
+                    .then((userCredential) => {
+                      const user = userCredential.user;
+                      console.log(user);
+                    })
+                    .catch(() => {
+                      toast.error("Tài khoản không hợp lệ!");
+                      setPassword("");
+                    })
+                    .finally(() => setIsLoading(false));
+                }
               }}
             >
               Đăng nhập

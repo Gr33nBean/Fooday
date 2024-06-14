@@ -1,6 +1,7 @@
 import CustomDialog from "@/components/common/Dialog";
 import Input from "@/components/common/Input";
 import Textarea from "@/components/common/Input/Textarea";
+import { routes } from "@/constants/tabBarIcon.constant";
 import { auth } from "@/libs/firebase/firebase.config";
 import { selectSignedUser, setSignedUser } from "@/redux/features/accountSlice";
 import { setIsLoading } from "@/redux/features/dialogSlice";
@@ -181,6 +182,7 @@ const EditProfile = () => {
                   signOut(auth)
                     .then(() => {
                       toast.success("Đăng xuất thành công");
+                      window.location.href = routes.home.href;
                     })
                     .catch(() => {});
                 },

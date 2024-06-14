@@ -122,25 +122,23 @@ const Home: React.FC = () => {
           />
         </div>
         <div className="ion-padding-horizontal sticky top-0 bg-white z-[10]">
-          {!isFetching1 && (
-            <NoScrollBarIonSegment
-              scrollable
-              value={selectedTab}
-              mode="md"
-              onIonChange={(event) => {
-                const newSegment = event.detail.value;
-                const index = tabs.findIndex((tab) => tab.value === newSegment);
-                swiperRef.current.swiper.slideTo(index);
-                setSelectedTab(newSegment as string);
-              }}
-            >
-              {tabs.map((tab, index) => (
-                <CustomIonSegmentButton key={index} value={tab.value}>
-                  <IonLabel>{tab.label}</IonLabel>
-                </CustomIonSegmentButton>
-              ))}
-            </NoScrollBarIonSegment>
-          )}
+          <NoScrollBarIonSegment
+            scrollable
+            value={selectedTab}
+            mode="md"
+            onIonChange={(event) => {
+              const newSegment = event.detail.value;
+              const index = tabs.findIndex((tab) => tab.value === newSegment);
+              swiperRef.current.swiper.slideTo(index);
+              setSelectedTab(newSegment as string);
+            }}
+          >
+            {tabs.map((tab, index) => (
+              <CustomIonSegmentButton key={index} value={tab.value}>
+                <IonLabel>{tab.label}</IonLabel>
+              </CustomIonSegmentButton>
+            ))}
+          </NoScrollBarIonSegment>
         </div>
         <Swiper
           ref={swiperRef}
@@ -157,7 +155,7 @@ const Home: React.FC = () => {
             <SwiperSlide key={index}>
               {tab.value === TABS.EVENT ? (
                 <>
-                  {isFetching2 ? (
+                  {!eventData ? (
                     <div className="w-full py-10">
                       <Loading />
                     </div>
@@ -181,7 +179,7 @@ const Home: React.FC = () => {
                 </>
               ) : (
                 <>
-                  {isFetching3 ? (
+                  {!postData ? (
                     <div className="w-full py-10">
                       <Loading />
                     </div>

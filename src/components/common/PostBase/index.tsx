@@ -50,7 +50,13 @@ const PostBase = ({
         openDetail ? "hover:bg-extra-extra-light-gray cursor-pointer" : ""
       }  border-extra-light-gray`}
     >
-      <button className="z-[5] h-fit" disabled={isResource}>
+      <button
+        className="z-[5] h-fit"
+        disabled={isResource}
+        style={{
+          pointerEvents: isResource ? "none" : "all",
+        }}
+      >
         <IonNavLink
           routerDirection="forward"
           component={() => <UserDetail uid={uid} />}
@@ -65,6 +71,9 @@ const PostBase = ({
           <div className={`w-full flex items-center gap-3 text-xs`}>
             <button
               className={`font-semibold text-dark-gray text-start flex-1 cursor-pointer`}
+              style={{
+                pointerEvents: isResource ? "none" : "all",
+              }}
               disabled={isResource}
             >
               <IonNavLink
@@ -90,6 +99,9 @@ const PostBase = ({
               <button
                 className={`font-semibold flex-1 text-start paragraph-overflow-ellipsis paragraph-overflow-ellipsis-1`}
                 disabled={isResource || !openDetail}
+                style={{
+                  pointerEvents: isResource || !openDetail ? "none" : "all",
+                }}
               >
                 <IonNavLink
                   routerDirection="forward"
